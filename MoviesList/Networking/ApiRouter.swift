@@ -16,6 +16,8 @@ enum ApiRouter: URLRequestConvertible {
     case getSimilarMoviesList(movieId: Int)
     case searchMovie(movieName: String)
     case getGenres
+    case getMovieCast(movieId: Int)
+    case getMovieDetails(movieId: Int)
     
     //MARK: - URLRequestConvertible
     func asURLRequest() throws -> URLRequest {
@@ -55,6 +57,10 @@ enum ApiRouter: URLRequestConvertible {
             return .get
         case .getGenres:
             return .get
+        case .getMovieCast:
+            return .get
+        case .getMovieDetails:
+            return .get
         }
     }
     
@@ -70,6 +76,10 @@ enum ApiRouter: URLRequestConvertible {
             return "/search/movie"
         case .getGenres:
             return "/genre/movie/list"
+        case .getMovieCast(let movieId):
+            return "/movie/\(movieId)/credits"
+        case .getMovieDetails(let movieId):
+            return "/movie/\(movieId)"
         }
     }
     
@@ -90,7 +100,10 @@ enum ApiRouter: URLRequestConvertible {
                 "query" : movieName
             ]
         case .getGenres:
-            //A dictionary of the key (From the constants file) and its value is returned
+            return [Constants.Parameters.apiKey : "02da584cad2ae31b564d940582770598"]
+        case .getMovieCast:
+            return [Constants.Parameters.apiKey : "02da584cad2ae31b564d940582770598"]
+        case .getMovieDetails:
             return [Constants.Parameters.apiKey : "02da584cad2ae31b564d940582770598"]
         }
     }

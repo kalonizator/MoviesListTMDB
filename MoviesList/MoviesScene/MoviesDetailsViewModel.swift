@@ -18,7 +18,7 @@ final class MoviesDetailsViewModel {
     
     // Outputs
     var loading: Driver<Bool>
-    var repos: Driver<MovieViewModel>
+    var movie: Driver<MovieDetailsViewModel>
     
     private let networkingService: NetworkingService
     
@@ -39,20 +39,20 @@ final class MoviesDetailsViewModel {
             .asDriver(onErrorJustReturn: Movie())
 
         let movies = Driver.merge(initialMovies)
-        self.repos = movies.map({ (result) -> MovieViewModel in
-            return MovieViewModel(name: result.name, imagePath: result.posterPath)
+        self.movie = movies.map({ (result) -> MovieDetailsViewModel in
+            return MovieDetailsViewModel(description: result.overview, imagePath: result.posterPath)
         })
     }
 }
 
-//struct MovieDetailsViewModel {
-//    let name: String?
-//    var imagePath: String?
-//}
-//
-//extension MovieViewModel {
-//    init(movie: Movie) {
-//        self.name = movie.name
-//        self.imagePath = movie.posterPath
-//    }
-//}
+struct MovieDetailsViewModel {
+    let description: String?
+    var imagePath: String?
+}
+
+extension MovieDetailsViewModel {
+    init(movie: Movie) {
+        self.description = movie.overview
+        self.imagePath = movie.posterPath
+    }
+}

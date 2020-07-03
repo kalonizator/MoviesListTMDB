@@ -18,7 +18,7 @@ final class SimilarMoviesViewModel {
     
     // Outputs
     var loading: Driver<Bool>
-    var repos: Driver<[MovieViewModel]>
+    var movie: Driver<[MovieViewModel]>
     var selectedMovieId: Driver<Int>
     
     private let networkingService: NetworkingService
@@ -52,7 +52,7 @@ final class SimilarMoviesViewModel {
             .asDriver(onErrorJustReturn: MovieRequestModel())
 
         let movies = Driver.merge(initialMovies, searchMovies)
-        self.repos = movies.map({ (result) -> [MovieViewModel] in
+        self.movie = movies.map({ (result) -> [MovieViewModel] in
             var movieArray : [MovieViewModel] = []
             for movie in result.results ?? [] {
                 movieArray.append(MovieViewModel(movie: movie))

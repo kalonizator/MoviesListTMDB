@@ -38,7 +38,7 @@ class MovieTableViewCell: UITableViewCell {
         return result
     }()
     
-    lazy var movieName : UILabel = {
+    lazy var movieNameLabel : UILabel = {
         let result = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.textColor = .black
@@ -71,14 +71,14 @@ class MovieTableViewCell: UITableViewCell {
         super.prepareForReuse()
         thumbnailImageView.sd_cancelCurrentImageLoad()
         thumbnailImageView.image = nil
-        movieName.text?.removeAll()
+        movieNameLabel.text?.removeAll()
     }
     
     // MARK: - Set up
     
     func setupViews() {
         contentView.addSubview(thumbnailImageView)
-        contentView.addSubview(movieName)
+        contentView.addSubview(movieNameLabel)
         
         setupLayout()
     }
@@ -91,7 +91,7 @@ class MovieTableViewCell: UITableViewCell {
             make.height.equalTo(350)
         }
         
-        movieName.snp.makeConstraints { make in
+        movieNameLabel.snp.makeConstraints { make in
             make.top.equalTo(thumbnailImageView.snp.bottom).offset(10)
             make.leading.equalTo(thumbnailImageView.snp.leading).offset(10)
             make.trailing.equalTo(thumbnailImageView.snp.trailing).offset(-10)
@@ -103,7 +103,7 @@ class MovieTableViewCell: UITableViewCell {
     
     func setData(movie: Movie) {
         thumbnailImageView.downloadImageWithBaseUrl(url: movie.posterPath, needBaseUrl: true)
-        movieName.text = movie.name ?? "no movie name"
+        movieNameLabel.text = movie.name ?? "no movie name"
     }
     
 }

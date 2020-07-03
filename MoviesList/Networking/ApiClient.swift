@@ -31,6 +31,14 @@ class ApiClient {
         return request(ApiRouter.getGenres)
     }
     
+    static func getMovieCast(movieId: Int) -> Observable<MovieCastModel> {
+        return request(ApiRouter.getMovieCast(movieId: movieId))
+    }
+    
+    static func getMovieDetails(movieId: Int) -> Observable<Movie> {
+        return request(ApiRouter.getMovieDetails(movieId: movieId))
+    }
+    
     //-------------------------------------------------------------------------------------------------
     //MARK: - The request function to get results in an Observable
     private static func request<T: Codable> (_ urlConvertible: URLRequestConvertible) -> Observable<T> {

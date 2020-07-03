@@ -14,16 +14,18 @@ final class ActorsViewModel {
     let viewWillAppearSubject = PublishSubject<Void>()
     let selectedIndexSubject = PublishSubject<IndexPath>()
     let searchQuerySubject = BehaviorSubject(value: "")
+    var movieId: Int!
     
     // Outputs
     var loading: Driver<Bool>
-    var repos: Driver<[GenreViewModel]>
+    var actors: Driver<[ActorViewModel]>
     var selectedActorId: Driver<Int>
     
     private let networkingService: NetworkingService
     
-    init(networkingService: NetworkingService) {
+    init(networkingService: NetworkingService, movieId: Int) {
         self.networkingService = networkingService
+        self.movieId = movieId
         
         let loading = ActivityIndicator()
         self.loading = loading.asDriver()
@@ -32,26 +34,26 @@ final class ActorsViewModel {
             .asObservable()
             .flatMap { _ in
                 networkingService
-                    .getGenresList()
+                    .getMovieCast(movieId: movieId)
                     .trackActivity(loading)
             }
-            .asDriver(onErrorJustReturn: GenresModel())
+            .asDriver(onErrorJustReturn: MovieCastModel())
 
-        let genres = Driver.merge(initialGenres)
-        self.repos = genres.map({ (result) -> [GenreViewModel] in
-            var genresArray : [GenreViewModel] = []
-            for genre in result.genres ?? [] {
-                genresArray.append(GenreViewModel(name: genre.name))
+        let actors = Driver.merge(initialGenres)
+        self.actors = actors.map({ (result) -> [ActorViewModel] in
+            var actorsArray : [ActorViewModel] = []
+            for actor in result.cast ?? [] {
+                actorsArray.append(ActorViewModel(name: actor.name, actorAvatarPath: actor.profilePath))
             }
-            return genresArray
+            return actorsArray
         })
         
 //        self.repos = repos.map { $0.results.map { RepoViewModel(repo: $0)} }
         
         self.selectedActorId = self.selectedIndexSubject
             .asObservable()
-            .withLatestFrom(genres) { (indexPath, genres) in
-                return genres.genres?[indexPath.item]
+            .withLatestFrom(actors) { (indexPath, genres) in
+                return genres.cast?[indexPath.row]
             }
         .map { $0?.id ?? 0 }
             .asDriver(onErrorJustReturn: 0)
@@ -60,10 +62,12 @@ final class ActorsViewModel {
 
 struct ActorViewModel {
     let name: String?
+    let actorAvatarPath: String?
 }
 
 extension ActorViewModel {
-    init(genre: Genre) {
-        self.name = genre.name
+    init(cast: Cast) {
+        self.name = cast.name
+        self.actorAvatarPath = cast.profilePath
     }
 }

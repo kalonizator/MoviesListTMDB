@@ -97,10 +97,10 @@ class SimilarMoviesViewController: UIViewController {
             .disposed(by: disposeBag)
 
         
-        viewModel.repos
+        viewModel.movie
             .drive(tableView.rx.items(cellIdentifier: "MovieTableViewCell", cellType: MovieTableViewCell.self)) { (row, element, cell) in
                 cell.thumbnailImageView.downloadImageWithBaseUrl(url: element.imagePath, needBaseUrl: true)
-                cell.movieName.text = element.name
+                cell.movieNameLabel.text = element.name
             }
             .disposed(by: disposeBag)
 

@@ -15,6 +15,9 @@ protocol NetworkingService {
     func getSimilarMoviesList(movieId: Int) -> Observable<MovieRequestModel>
     func searchMovie(movieName: String) -> Observable<MovieRequestModel>
     func getGenresList() -> Observable<GenresModel>
+    func getMovieCast(movieId: Int) -> Observable<MovieCastModel>
+    func getMovieDetails(movieId: Int) -> Observable<Movie>
+
 }
 
 final class NetworkingApi: NetworkingService {
@@ -29,5 +32,11 @@ final class NetworkingApi: NetworkingService {
     }
     func getGenresList() -> Observable<GenresModel> {
         return ApiClient.getGenres()
+    }
+    func getMovieCast(movieId: Int) -> Observable<MovieCastModel> {
+        return ApiClient.getMovieCast(movieId: movieId)
+    }
+    func getMovieDetails(movieId: Int) -> Observable<Movie> {
+        return ApiClient.getMovieDetails(movieId: movieId)
     }
 }

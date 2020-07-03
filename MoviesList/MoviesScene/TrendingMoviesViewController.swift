@@ -100,7 +100,7 @@ class TrendingMoviesViewController: UIViewController {
         viewModel.repos
             .drive(tableView.rx.items(cellIdentifier: "MovieTableViewCell", cellType: MovieTableViewCell.self)) { (row, element, cell) in
                 cell.thumbnailImageView.downloadImageWithBaseUrl(url: element.imagePath, needBaseUrl: true)
-                cell.movieName.text = element.name
+                cell.movieNameLabel.text = element.name
             }
             .disposed(by: disposeBag)
 
@@ -111,7 +111,8 @@ class TrendingMoviesViewController: UIViewController {
         viewModel.selectedMovieId
             .drive(onNext: { [weak self] movieId in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(SimilarMoviesViewController(viewModel: SimilarMoviesViewModel(networkingService: NetworkingApi(), movieId: movieId)), animated: true)
+                let networkApi = NetworkingApi()
+                self.navigationController?.pushViewController(MovieDetailesViewController(viewModel: ActorsViewModel(networkingService: networkApi, movieId: movieId), similarViewModel: SimilarMoviesViewModel(networkingService: networkApi, movieId: movieId), movieDetailsViewModel: MoviesDetailsViewModel(networkingService: networkApi, movieId: movieId)), animated: true)
             })
             .disposed(by: disposeBag)
     }

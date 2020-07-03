@@ -8,17 +8,8 @@
 
 import UIKit
 
-var hasTopNotch: Bool {
-    if #available(iOS 11.0,  *) {
-        return UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 20
-    }
-    return false
-}
-
 class TabbarViewController: UITabBarController {
-    
-    //    var myInformation: User?
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
