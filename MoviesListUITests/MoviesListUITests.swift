@@ -3,7 +3,7 @@
 //  MoviesListUITests
 //
 //  Created by Адилет on 6/26/20.
-//  Copyright © 2020 kalonizator corp. All rights reserved.
+//  Copyright © 2020 kalonizator. All rights reserved.
 //
 
 import XCTest
